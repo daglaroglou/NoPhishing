@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AntiPhishing;
+namespace NoPhishing;
 
 // Response model for Anti-Fish API
 public class AntiFishResponse
@@ -232,7 +232,7 @@ public class DetectionLog
 }
 
 // Database context
-public class AntiPhishingDbContext : DbContext
+public class NoPhishingDbContext : DbContext
 {
     public DbSet<ScamDomain> ScamDomains { get; set; }
     public DbSet<DomainImportLog> DomainImportLogs { get; set; }
@@ -243,7 +243,7 @@ public class AntiPhishingDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source=antiphishing.db");
+        optionsBuilder.UseSqlite("Data Source=nophishing.db");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -311,7 +311,7 @@ class Program
 
     static async Task Main(string[] args)
     {
-        Console.WriteLine("AntiPhishing Discord Bot Starting...");
+        Console.WriteLine("NoPhishing Discord Bot Starting...");
         Console.WriteLine("=====================================");
         
         // Build configuration with user secrets
@@ -917,7 +917,7 @@ class Program
         // Check database if not in cache
         try
         {
-            using var context = new AntiPhishingDbContext();
+            using var context = new NoPhishingDbContext();
             var exists = await context.ScamDomains
                 .AnyAsync(d => d.IsActive && d.Domain.ToLower() == normalizedDomain);
             
@@ -949,7 +949,7 @@ class Program
                 return;
             }
 
-            using var context = new AntiPhishingDbContext();
+            using var context = new NoPhishingDbContext();
             
             // Check if domain already exists in database
             var existingDomain = await context.ScamDomains
@@ -1080,7 +1080,7 @@ class Program
     {
         try
         {
-            using var context = new AntiPhishingDbContext();
+            using var context = new NoPhishingDbContext();
             
             // Check if database needs to be recreated (for schema updates)
             bool needsRecreation = false;
@@ -1160,7 +1160,7 @@ class Program
     {
         try
         {
-            using var context = new AntiPhishingDbContext();
+            using var context = new NoPhishingDbContext();
             var domains = await context.ScamDomains
                 .Where(d => d.IsActive)
                 .Select(d => d.Domain.ToLower())
@@ -1185,7 +1185,7 @@ class Program
     {
         try
         {
-            using var context = new AntiPhishingDbContext();
+            using var context = new NoPhishingDbContext();
             return await context.ScamDomains.CountAsync(d => d.IsActive);
         }
         catch (Exception ex)
@@ -1210,7 +1210,7 @@ class Program
             var skippedCount = 0;
             const int batchSize = 1000;
 
-            using var context = new AntiPhishingDbContext();
+            using var context = new NoPhishingDbContext();
             
             // Get existing domains to avoid checking each one individually
             var existingDomains = await context.ScamDomains
@@ -1332,7 +1332,7 @@ class Program
                 .AddField("🔒 Safety Note", "Click the button below to reveal the URLs if needed for investigation purposes.", false)
                 .AddField("🛡️ Protection Level", "Three-Tier Validation + Auto-Learning", true)
                 .AddField("🧠 Smart Database", "New threats automatically added", true)
-                .WithFooter("AntiPhishing Bot - Stay Safe!")
+                .WithFooter("NoPhishing Bot - Stay Safe!")
                 .WithTimestamp(DateTimeOffset.Now)
                 .Build();
 
@@ -1388,7 +1388,7 @@ class Program
                     .AddField("Detected Scam URLs", string.Join("\n", urlsWithSources))
                     .AddField("🛡️ Safety Reminder", "These URLs were flagged by our protection systems. Avoid clicking them to stay safe.", false)
                     .AddField("Investigation Tip", "Use a safe environment to analyze these URLs, if necessary.", false)
-                    .WithFooter("AntiPhishing Bot - For Investigation Purposes Only")
+                    .WithFooter("NoPhishing Bot - For Investigation Purposes Only")
                     .WithTimestamp(DateTimeOffset.Now)
                     .Build();
 
@@ -1437,7 +1437,7 @@ class Program
                     .AddField("🏠 How to Use", "Invite the bot to your Discord server and use the commands there.", false)
                     .AddField("🛡️ Why This Restriction?", "The bot manages server-specific protection settings that don't apply to DMs.", false)
                     .AddField("📋 Available Commands", "`/activate`, `/deactivate`, `/status`, `/update`, `/check`, `/report`, `/whitelist`, `/blacklist`, `/stats`, `/config`, `/history`", false)
-                    .WithFooter("AntiPhishing Bot - Server Protection")
+                    .WithFooter("NoPhishing Bot - Server Protection")
                     .WithTimestamp(DateTimeOffset.Now)
                     .Build();
                     
@@ -1457,7 +1457,7 @@ class Program
                         .AddField("Guild Protection", "🛡️ Active", true)
                         .AddField("Protection Layers", "Database + APIs", true)
                         .AddField("Persistence", "💾 Survives bot restarts", true)
-                        .WithFooter("AntiPhishing Bot - Stay Safe!")
+                        .WithFooter("NoPhishing Bot - Stay Safe!")
                         .WithTimestamp(DateTimeOffset.Now)
                         .Build();
                     await command.RespondAsync(embed: activatedEmbed);
@@ -1472,7 +1472,7 @@ class Program
                         .WithDescription("The bot has stopped scanning messages for scam links in this server.")
                         .AddField("Guild Protection", "🔒 Inactive", true)
                         .AddField("Persistence", "💾 Setting saved", true)
-                        .WithFooter("AntiPhishing Bot")
+                        .WithFooter("NoPhishing Bot")
                         .WithTimestamp(DateTimeOffset.Now)
                         .Build();
                     await command.RespondAsync(embed: deactivatedEmbed);
@@ -1492,7 +1492,7 @@ class Program
                     
                     var statusEmbed = new EmbedBuilder()
                         .WithColor(statusColor)
-                        .WithTitle("📊 AntiPhishing Bot Status")
+                        .WithTitle("📊 NoPhishing Bot Status")
                         .AddField("Defending Mode", $"{statusIcon} {statusText}", true)
                         .AddField("Guild ID", guildId.ToString(), true)
                         .AddField("Scam Domains", $"{domainCount} in database", true)
@@ -1502,7 +1502,7 @@ class Program
                         .AddField("Last Activated", lastActivated, true)
                         .AddField("Activated By", activatedBy, true)
                         .AddField("Database Type", "SQLite + In-Memory Cache", true)
-                        .WithFooter("AntiPhishing Bot")
+                        .WithFooter("NoPhishing Bot")
                         .WithTimestamp(DateTimeOffset.Now)
                         .Build();
                     await command.RespondAsync(embed: statusEmbed, ephemeral: true);
@@ -1519,7 +1519,7 @@ class Program
                             .WithDescription("The `/update` command can only be used by the bot owner.")
                             .AddField("🛡️ Security", "This restriction prevents unauthorized database updates.", false)
                             .AddField("📝 Note", "If you are the bot owner, ensure your Discord user ID is properly configured.", false)
-                            .WithFooter("AntiPhishing Bot - Access Denied")
+                            .WithFooter("NoPhishing Bot - Access Denied")
                             .WithTimestamp(DateTimeOffset.Now)
                             .Build();
                         
@@ -1555,7 +1555,7 @@ class Program
                         .AddField("Update Duration", $"{(DateTime.Now - updateStartTime).TotalSeconds:F1}s", true)
                         .AddField("Source", "[Discord-AntiScam Repository](https://github.com/Discord-AntiScam/scam-links)", false)
                         .AddField("Storage", "SQLite Database + Cache", true)
-                        .WithFooter("AntiPhishing Bot - Database Updated")
+                        .WithFooter("NoPhishing Bot - Database Updated")
                         .WithTimestamp(DateTimeOffset.Now)
                         .Build();
                     
@@ -1613,7 +1613,7 @@ class Program
                                 .AddField("Recommendation", recommendation, false)
                                 .AddField("Validation Method", "Three-Tier Analysis", true)
                                 .AddField("Sources Used", "Database + Phish.Sinking.Yachts + Anti-Fish API", true)
-                                .WithFooter("AntiPhishing Bot - Three-Tier Domain Analysis")
+                                .WithFooter("NoPhishing Bot - Three-Tier Domain Analysis")
                                 .WithTimestamp(DateTimeOffset.Now)
                                 .Build();
                             
@@ -1815,7 +1815,7 @@ class Program
             var cleanDomain = ExtractDomainFromUrl(domain).ToLowerInvariant();
             
             // Save report to database
-            using var context = new AntiPhishingDbContext();
+            using var context = new NoPhishingDbContext();
             
             // Ensure the database schema is up to date (in case DomainReports table doesn't exist)
             try
@@ -1927,7 +1927,7 @@ class Program
                 .AddField("Reason", string.IsNullOrEmpty(reason) ? "Not specified" : reason, false)
                 .AddField("Report Time", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC"), true)
                 .AddField("🔍 Actions Available", "• Check domain with `/check`\n• Review in database\n• Add to scam list if confirmed", false)
-                .WithFooter("AntiPhishing Bot - Domain Report System")
+                .WithFooter("NoPhishing Bot - Domain Report System")
                 .WithTimestamp(DateTimeOffset.Now)
                 .Build();
             
@@ -1962,7 +1962,7 @@ class Program
                     .WithDescription("Report submissions can only be made from Discord servers, not from direct messages.")
                     .AddField("🏠 How to Use", "Use the `/report` command in a Discord server where the bot is present.", false)
                     .AddField("🛡️ Security Note", "This restriction helps maintain proper reporting context and security.", false)
-                    .WithFooter("AntiPhishing Bot - Server Protection")
+                    .WithFooter("NoPhishing Bot - Server Protection")
                     .WithTimestamp(DateTimeOffset.Now)
                     .Build();
                     
@@ -2090,7 +2090,7 @@ class Program
                     var cleanDomain = ExtractDomainFromUrl(domain);
                     var guild = _client?.GetGuild(command.GuildId ?? 0);
 
-                    using (var context = new AntiPhishingDbContext())
+                    using (var context = new NoPhishingDbContext())
                     {
                         // Check if already whitelisted
                         var existing = await context.WhitelistDomains
@@ -2125,7 +2125,7 @@ class Program
                         .AddField("Domain", cleanDomain, true)
                         .AddField("Added By", command.User.Username, true)
                         .AddField("Reason", reason ?? "Not specified", false)
-                        .WithFooter("AntiPhishing Bot - Whitelist Management")
+                        .WithFooter("NoPhishing Bot - Whitelist Management")
                         .WithTimestamp(DateTimeOffset.Now)
                         .Build();
 
@@ -2142,7 +2142,7 @@ class Program
 
                     var removeDomain = ExtractDomainFromUrl(domain);
 
-                    using (var context = new AntiPhishingDbContext())
+                    using (var context = new NoPhishingDbContext())
                     {
                         var existing = await context.WhitelistDomains
                             .FirstOrDefaultAsync(w => w.Domain == removeDomain && w.GuildId == guildId && w.IsActive);
@@ -2163,7 +2163,7 @@ class Program
                         .WithDescription($"Domain `{removeDomain}` has been removed from the server whitelist.")
                         .AddField("Domain", removeDomain, true)
                         .AddField("Removed By", command.User.Username, true)
-                        .WithFooter("AntiPhishing Bot - Whitelist Management")
+                        .WithFooter("NoPhishing Bot - Whitelist Management")
                         .WithTimestamp(DateTimeOffset.Now)
                         .Build();
 
@@ -2172,7 +2172,7 @@ class Program
                     break;
 
                 case "list":
-                    using (var context = new AntiPhishingDbContext())
+                    using (var context = new NoPhishingDbContext())
                     {
                         var whitelistDomains = await context.WhitelistDomains
                             .Where(w => w.GuildId == guildId && w.IsActive)
@@ -2196,7 +2196,7 @@ class Program
                                 : domainList, false);
                         }
 
-                        listEmbed.WithFooter("AntiPhishing Bot - Whitelist Management")
+                        listEmbed.WithFooter("NoPhishing Bot - Whitelist Management")
                             .WithTimestamp(DateTimeOffset.Now);
 
                         await command.RespondAsync(embed: listEmbed.Build(), ephemeral: true);
@@ -2240,7 +2240,7 @@ class Program
 
                     var cleanDomain = ExtractDomainFromUrl(domain);
 
-                    using (var context = new AntiPhishingDbContext())
+                    using (var context = new NoPhishingDbContext())
                     {
                         // Check if already blacklisted
                         var existing = await context.ScamDomains
@@ -2276,7 +2276,7 @@ class Program
                         .AddField("Added By", command.User.Username, true)
                         .AddField("Source", "Manual Addition", true)
                         .AddField("Reason", reason ?? "Not specified", false)
-                        .WithFooter("AntiPhishing Bot - Blacklist Management")
+                        .WithFooter("NoPhishing Bot - Blacklist Management")
                         .WithTimestamp(DateTimeOffset.Now)
                         .Build();
 
@@ -2293,7 +2293,7 @@ class Program
 
                     var removeDomain = ExtractDomainFromUrl(domain);
 
-                    using (var context = new AntiPhishingDbContext())
+                    using (var context = new NoPhishingDbContext())
                     {
                         var existing = await context.ScamDomains
                             .FirstOrDefaultAsync(s => s.Domain == removeDomain && s.IsActive);
@@ -2317,7 +2317,7 @@ class Program
                         .WithDescription($"Domain `{removeDomain}` has been removed from the scam database.")
                         .AddField("Domain", removeDomain, true)
                         .AddField("Removed By", command.User.Username, true)
-                        .WithFooter("AntiPhishing Bot - Blacklist Management")
+                        .WithFooter("NoPhishing Bot - Blacklist Management")
                         .WithTimestamp(DateTimeOffset.Now)
                         .Build();
 
@@ -2326,7 +2326,7 @@ class Program
                     break;
 
                 case "list":
-                    using (var context = new AntiPhishingDbContext())
+                    using (var context = new NoPhishingDbContext())
                     {
                         var blacklistDomains = await context.ScamDomains
                             .Where(s => s.IsActive && s.DetectionSource == "Manual")
@@ -2350,7 +2350,7 @@ class Program
                                 : domainList, false);
                         }
 
-                        listEmbed.WithFooter("AntiPhishing Bot - Blacklist Management")
+                        listEmbed.WithFooter("NoPhishing Bot - Blacklist Management")
                             .WithTimestamp(DateTimeOffset.Now);
 
                         await command.RespondAsync(embed: listEmbed.Build(), ephemeral: true);
@@ -2375,7 +2375,7 @@ class Program
         {
             var guildId = command.GuildId ?? 0;
 
-            using (var context = new AntiPhishingDbContext())
+            using (var context = new NoPhishingDbContext())
             {
                 var thirtyDaysAgo = DateTime.UtcNow.AddDays(-30);
                 var sevenDaysAgo = DateTime.UtcNow.AddDays(-7);
@@ -2417,7 +2417,7 @@ class Program
                 var isActive = IsDefendingModeActive(guildId);
                 statsEmbed.AddField("🛡️ Protection Status", isActive ? "🟢 Active" : "🔴 Inactive", true);
 
-                statsEmbed.WithFooter("AntiPhishing Bot - Server Statistics")
+                statsEmbed.WithFooter("NoPhishing Bot - Server Statistics")
                     .WithTimestamp(DateTimeOffset.Now);
 
                 await command.RespondAsync(embed: statsEmbed.Build(), ephemeral: true);
@@ -2444,7 +2444,7 @@ class Program
                 return;
             }
 
-            using (var context = new AntiPhishingDbContext())
+            using (var context = new NoPhishingDbContext())
             {
                 var config = await context.ServerConfigs.FirstOrDefaultAsync(c => c.GuildId == guildId);
                 
@@ -2473,7 +2473,7 @@ class Program
                             .AddField("🎯 Scam Detection Threshold", config.ScamThreshold.ToString(), true)
                             .AddField("🕒 Last Updated", config.LastUpdated.ToString("yyyy-MM-dd HH:mm"), true)
                             .AddField("👤 Updated By", config.UpdatedByUsername ?? "System", true)
-                            .WithFooter("AntiPhishing Bot - Server Configuration")
+                            .WithFooter("NoPhishing Bot - Server Configuration")
                             .WithTimestamp(DateTimeOffset.Now)
                             .Build();
 
@@ -2560,7 +2560,7 @@ class Program
                         .AddField("Setting", setting, true)
                         .AddField("New Value", value ?? "Cleared", true)
                         .AddField("Updated By", command.User.Username, true)
-                        .WithFooter("AntiPhishing Bot - Configuration Management")
+                        .WithFooter("NoPhishing Bot - Configuration Management")
                         .WithTimestamp(DateTimeOffset.Now)
                         .Build();
 
@@ -2593,7 +2593,7 @@ class Program
 
             var cutoffDate = DateTime.UtcNow.AddDays(-days);
 
-            using (var context = new AntiPhishingDbContext())
+            using (var context = new NoPhishingDbContext())
             {
                 IQueryable<DetectionLog> query = context.DetectionLogs
                     .Where(d => d.GuildId == guildId && d.DetectionDate >= cutoffDate);
@@ -2648,7 +2648,7 @@ class Program
                         $"**Time Period:** {days} days", true);
                 }
 
-                historyEmbed.WithFooter("AntiPhishing Bot - Detection History")
+                historyEmbed.WithFooter("NoPhishing Bot - Detection History")
                     .WithTimestamp(DateTimeOffset.Now);
 
                 await command.RespondAsync(embed: historyEmbed.Build(), ephemeral: true);
@@ -2687,7 +2687,7 @@ class Program
             var guildChannel = message.Channel as SocketGuildChannel;
             if (guildChannel == null) return;
 
-            using (var context = new AntiPhishingDbContext())
+            using (var context = new NoPhishingDbContext())
             {
                 foreach (var (url, source) in scamUrls)
                 {
@@ -2728,7 +2728,7 @@ class Program
         {
             var normalizedDomain = ExtractDomainFromUrl(domain).ToLowerInvariant();
             
-            using (var context = new AntiPhishingDbContext())
+            using (var context = new NoPhishingDbContext())
             {
                 return await context.WhitelistDomains
                     .AnyAsync(w => w.Domain == normalizedDomain && 

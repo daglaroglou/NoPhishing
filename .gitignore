@@ -16,7 +16,7 @@ bld/
 # Bot runtime files (contain server-specific data)
 bot_settings.json
 scam_links.txt
-antiphishing.db
+nophishing.db
 *.db
 *.db-shm
 *.db-wal
