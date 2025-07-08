@@ -1,28 +1,28 @@
-# NoPhishing Discord Bot
+﻿# NoPhishing Discord Bot
 
 A C# Discord bot that automatically scans messages for links and detects potential scam or phishing URLs by checking them against a SQLite database. Now includes **slash commands** to control defending mode, **secure configuration** for token management, and **automatic database updates** from GitHub!
 
 ## Features
 
-- ?? **Automatic Link Scanning**: Monitors all messages for URLs
-- ?? **Scam Detection**: Checks URLs against a SQLite database of known scam domains
-- ?? **Real-time Alerts**: Sends warning messages when scam links are detected
-- ?? **SQLite Database**: High-performance, reliable database storage using Entity Framework Core
-- ??? **Safe Operation**: Bot ignores its own messages and other bots
-- ?? **Guild-Only Commands**: **NEW!** All commands restricted to Discord servers for security
-- ? **Slash Commands**: Control defending mode with `/activate`, `/deactivate`, `/status`, `/update`, `/check`, `/report`, `/whitelist`, `/stats`, `/export`, `/config`, `/scan`, `/history`, and `/recent`
-- ?? **Interactive Reporting**: **NEW!** Report malicious domains using Discord's modal forms for better user experience
-- ??? **Toggle Protection**: Enable or disable link scanning on demand
-- ?? **Triple Protection**: Local database + Phish.Sinking.Yachts + Anti-Fish API detection
-- ?? **Auto-Learning**: **NEW!** Automatically adds API-detected domains to SQLite database
-- ?? **Persistent Settings**: **NEW!** Guild defending mode settings survive bot restarts
-- ?? **Database Migration**: **NEW!** Automatically migrates from legacy text files to SQLite
-- ? **Whitelist Management**: **NEW!** Add trusted domains to prevent false positives
-- ?? **Advanced Statistics**: **NEW!** Comprehensive protection statistics and analysis
-- ?? **Manual Scanning**: **NEW!** Scan historical messages for threats
-- ?? **Activity Tracking**: **NEW!** View detection history and recent activity
-- ?? **Server Configuration**: **NEW!** Customize bot behavior per server
-- ?? **Data Export**: **NEW!** Export data for analysis and reporting
+- 🔍 **Automatic Link Scanning**: Monitors all messages for URLs
+- ⚠️ **Scam Detection**: Checks URLs against a SQLite database of known scam domains
+- 🚨 **Real-time Alerts**: Sends warning messages when scam links are detected
+- 💾 **SQLite Database**: High-performance, reliable database storage using Entity Framework Core
+- 🛡️ **Safe Operation**: Bot ignores its own messages and other bots
+- 🏠 **Guild-Only Commands**: **NEW!** All commands restricted to Discord servers for security
+- ⚡ **Slash Commands**: Control defending mode with `/activate`, `/deactivate`, `/status`, `/update`, `/check`, `/report`, `/whitelist`, `/stats`, `/export`, `/config`, `/scan`, `/history`, and `/recent`
+- 📝 **Interactive Reporting**: **NEW!** Report malicious domains using Discord's modal forms for better user experience
+- 🎛️ **Toggle Protection**: Enable or disable link scanning on demand
+- 🌐 **Triple Protection**: Local database + Phish.Sinking.Yachts + Anti-Fish API detection
+- 🧠 **Auto-Learning**: **NEW!** Automatically adds API-detected domains to SQLite database
+- 💾 **Persistent Settings**: **NEW!** Guild defending mode settings survive bot restarts
+- 📦 **Database Migration**: **NEW!** Automatically migrates from legacy text files to SQLite
+- ✅ **Whitelist Management**: **NEW!** Add trusted domains to prevent false positives
+- 📊 **Advanced Statistics**: **NEW!** Comprehensive protection statistics and analysis
+- 🔍 **Manual Scanning**: **NEW!** Scan historical messages for threats
+- 📈 **Activity Tracking**: **NEW!** View detection history and recent activity
+- ⚙️ **Server Configuration**: **NEW!** Customize bot behavior per server
+- 📋 **Data Export**: **NEW!** Export data for analysis and reporting
 
 ## Triple-Layer Protection
 
@@ -32,67 +32,67 @@ The bot uses a sophisticated **three-tier detection system** for comprehensive t
 - Downloads from [Discord-AntiScam GitHub repository](https://github.com/Discord-AntiScam/scam-links)
 - Updates automatically on startup using Entity Framework Core
 - Community-maintained list of known scam domains stored in SQLite
-- ? **Instant lookup** with in-memory caching for maximum performance
-- ?? **Import tracking** with detailed logs and statistics
+- ⚡ **Instant lookup** with in-memory caching for maximum performance
+- 📊 **Import tracking** with detailed logs and statistics
 
 ### 2. **Phish.Sinking.Yachts API** (Secondary - Tier 2)
 - Real-time phishing detection via [phish.sinking.yachts](https://phish.sinking.yachts/)
 - Community-driven phishing domain database
-- ?? **Community intelligence** for emerging threats
+- 🌊 **Community intelligence** for emerging threats
 
 ### 3. **Anti-Fish API** (Tertiary - Tier 3)
 - Advanced threat analysis via [anti-fish.bitflow.dev](https://anti-fish.bitflow.dev/)
 - AI-powered scam detection engine
-- ?? **Real-time analysis** for unknown threats
+- 🐟 **Real-time analysis** for unknown threats
 
 ### Detection Flow:
-Domain Found ? Check Local Database ? Check Phish.Sinking.Yachts ? Check Anti-Fish API ? Report if Flagged ? Auto-Add New Domains
+Domain Found → Check Local Database → Check Phish.Sinking.Yachts → Check Anti-Fish API → Report if Flagged → Auto-Add New Domains
 ### **Manual vs Automatic Checking:**
 - **Manual `/check`**: Full three-tier analysis with detailed reporting + auto-learning
 - **Automatic Scanning**: Optimized two-tier (Local + Anti-Fish) for performance + auto-learning
 - **Emergency Scanning**: Adds Sinking Yachts if Anti-Fish is unavailable + auto-learning
 - **Auto-Learning**: **NEW!** All API detections automatically added to local database
 
-## ?? Auto-Learning SQLite Database
+## 🧠 Auto-Learning SQLite Database
 
 The bot now features **intelligent auto-learning** with SQLite database storage that continuously improves protection:
 
 ### **How Auto-Learning Works:**
 1. **API Detection**: When APIs detect a scam domain not in SQLite database
-2. **Automatic Addition**: Domain is immediately added to `NoPhishing.db` SQLite database
+2. **Automatic Addition**: Domain is immediately added to `nophishing.db` SQLite database
 3. **Instant Protection**: New domain becomes available for future checks via in-memory cache
 4. **Source Attribution**: Records which API detected the domain with timestamps
 5. **Thread-Safe**: Multiple detections handled safely using Entity Framework Core
 
 ### **Auto-Learning Process:**
-New Domain Detected by API ? Check SQLite DB ? If Not Found ? Add to Database ? Update In-Memory Cache ? Log Import Details
+New Domain Detected by API → Check SQLite DB → If Not Found → Add to Database → Update In-Memory Cache → Log Import Details
 
 ### **Benefits:**
-? **Continuous Improvement**: Database grows with each new threat discovered  
-? **Zero Maintenance**: No manual intervention required for new domains  
-? **Faster Future Detection**: API-detected domains become local for instant lookup  
-? **Community Contribution**: Local discoveries benefit from external intelligence  
-? **Persistent Learning**: Added domains survive bot restarts in SQLite  
-? **Import Tracking**: Detailed logs of all database imports and updates  
-? **High Performance**: Entity Framework Core with in-memory caching  
+✅ **Continuous Improvement**: Database grows with each new threat discovered  
+✅ **Zero Maintenance**: No manual intervention required for new domains  
+✅ **Faster Future Detection**: API-detected domains become local for instant lookup  
+✅ **Community Contribution**: Local discoveries benefit from external intelligence  
+✅ **Persistent Learning**: Added domains survive bot restarts in SQLite  
+✅ **Import Tracking**: Detailed logs of all database imports and updates  
+✅ **High Performance**: Entity Framework Core with in-memory caching  
 
 ### **Example Auto-Learning Log:**
 ```
-?? New scam domain detected by Anti-Fish API: malicious-new-site.com
-?? Added new scam domain to database: malicious-new-site.com (detected by Anti-Fish API)
-??? SQLite database now contains 1,268 domains
-?? Import completed: 1 new domains, 0 skipped
+🆕 New scam domain detected by Anti-Fish API: malicious-new-site.com
+📝 Added new scam domain to database: malicious-new-site.com (detected by Anti-Fish API)
+🗂️ SQLite database now contains 1,268 domains
+📊 Import completed: 1 new domains, 0 skipped
 ```
 
 ### **Database Migration:**
 ```
-?? Migrating legacy scam_links.txt to database...
-?? Imported 1,267 domains from legacy file
-? Legacy migration completed successfully
-??? Legacy file backed up as scam_links.txt.bak
+🔄 Migrating legacy scam_links.txt to database...
+📊 Imported 1,267 domains from legacy file
+✅ Legacy migration completed successfully
+🗑️ Legacy file backed up as scam_links.txt.bak
 ```
 
-## ?? Persistent Guild Settings
+## 💾 Persistent Guild Settings
 
 The bot now features **persistent storage** of defending mode settings per Discord server (guild):
 
@@ -118,18 +118,18 @@ The bot now features **persistent storage** of defending mode settings per Disco
 ```
 
 ### **Benefits:**
-? **No Manual Reactivation**: Bot remembers which servers had protection enabled  
-? **Per-Server Control**: Each Discord server maintains independent settings  
-? **Audit Trail**: Track who activated/deactivated defending mode and when  
-? **Automatic Backup**: Settings are saved immediately when changed  
-? **Zero Configuration**: Settings file is created automatically  
+✅ **No Manual Reactivation**: Bot remembers which servers had protection enabled  
+✅ **Per-Server Control**: Each Discord server maintains independent settings  
+✅ **Audit Trail**: Track who activated/deactivated defending mode and when  
+✅ **Automatic Backup**: Settings are saved immediately when changed  
+✅ **Zero Configuration**: Settings file is created automatically  
 
 ### **Files Created:**
 - `bot_settings.json` - Guild defending mode settings (auto-generated)
-- `NoPhishing.db` - SQLite database with scam domains (auto-generated)
+- `nophishing.db` - SQLite database with scam domains (auto-generated)
 - `scam_links.txt` - Legacy file (migrated to database on first run)
 
-## ?? Interactive Domain Reporting
+## 📝 Interactive Domain Reporting
 
 The bot features an **interactive modal form system** for reporting potentially malicious domains:
 
@@ -144,28 +144,28 @@ The bot features an **interactive modal form system** for reporting potentially 
 5. **Database Storage**: All reports are saved to the database for review
 
 ### **Reporting Features:**
-? **User-Friendly Interface**: Professional modal form instead of command parameters  
-? **Flexible Input**: Accept full URLs or just domain names  
-? **Rich Context**: Collect detailed reasons and additional information  
-? **Automatic Validation**: Ensure required fields are filled  
-? **Smart Normalization**: Clean up URLs to extract domains properly  
-? **Dual Storage**: Save to database and attempt developer notification  
-? **Detailed Responses**: Professional embed responses with report IDs  
+✅ **User-Friendly Interface**: Professional modal form instead of command parameters  
+✅ **Flexible Input**: Accept full URLs or just domain names  
+✅ **Rich Context**: Collect detailed reasons and additional information  
+✅ **Automatic Validation**: Ensure required fields are filled  
+✅ **Smart Normalization**: Clean up URLs to extract domains properly  
+✅ **Dual Storage**: Save to database and attempt developer notification  
+✅ **Detailed Responses**: Professional embed responses with report IDs  
 
 ### **Example Report Flow:**
 ```
 User: /report
 Bot: [Opens modal form]
 User: [Fills form with domain, reason, details]
-Bot: ? Report Submitted Successfully
+Bot: ✅ Report Submitted Successfully
      Domain: suspicious-site.com
      Report ID: A1B2C3D4E5F6
-     Status: ?? Sent to developer
+     Status: 📧 Sent to developer
 ```
 
 ## Slash Commands
 
-**?? Important**: All commands must be used in Discord servers (guilds), not in direct messages. The bot will respond with an error if commands are attempted in DMs.
+**⚠️ Important**: All commands must be used in Discord servers (guilds), not in direct messages. The bot will respond with an error if commands are attempted in DMs.
 
 ### Core Protection Commands
 | Command | Description | Usage |
@@ -236,8 +236,8 @@ The `/export` command supports different data types:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/NoPhishing-discord-bot.git
-   cd NoPhishing-discord-bot
+   git clone https://github.com/daglaroglou/NoPhishing.git
+   cd NoPhishing
    ```
 
 2. **Install Dependencies**:
@@ -246,13 +246,7 @@ The `/export` command supports different data types:
    ```
 
 3. **Configure the Bot**:
-   - Edit `appsettings.json` and set your Discord bot token:
-   ```json
-   {
-     "DiscordBotToken": "YOUR_BOT_TOKEN_HERE",
-     "DeveloperUserId": "YOUR_DISCORD_USER_ID_HERE"
-   }
-   ```
+- Make use of Environment User Secret variables.
    
    **Configuration Options:**
    - `DiscordBotToken`: Your Discord bot token (required)
@@ -292,7 +286,7 @@ The `/export` command supports different data types:
    - Embed Links
 
 3. **Invite the Bot**:
-   - Go to OAuth2 ? URL Generator
+   - Go to OAuth2 → URL Generator
    - Select "bot" and "applications.commands" scopes
    - Select the required permissions above
    - Use the generated URL to invite the bot to your server
@@ -320,7 +314,7 @@ To update the bot to the latest version:
 
 The bot automatically manages its SQLite database:
 
-- **First Run**: Creates `NoPhishing.db` and migrates any existing `scam_links.txt` file
+- **First Run**: Creates `nophishing.db` and migrates any existing `scam_links.txt` file
 - **Automatic Updates**: Downloads and imports new domains from GitHub on startup
 - **Auto-Learning**: Adds API-detected domains automatically during operation
 - **Performance**: Uses in-memory caching for fast domain lookups
@@ -329,7 +323,7 @@ The bot automatically manages its SQLite database:
 
 - `appsettings.json` - Bot configuration (Discord token)
 - `bot_settings.json` - Persistent guild settings (auto-generated)
-- `NoPhishing.db` - SQLite database (auto-generated)
+- `nophishing.db` - SQLite database (auto-generated)
 - `scam_links.txt` - Legacy file (migrated on first run)
 
 ## Usage
